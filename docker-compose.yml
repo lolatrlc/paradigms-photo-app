@@ -1,0 +1,16 @@
+services:
+  db:
+    image: postgres:15
+    restart: always
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: photodb
+    ports:
+      - "5432:5432"
+
+  adminer: # Interface visuelle pour voir ta base de données
+    image: adminer
+    restart: always
+    ports:
+      - "8080:8080"

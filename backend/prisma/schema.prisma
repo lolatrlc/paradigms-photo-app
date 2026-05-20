@@ -1,0 +1,51 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// Les rôles demandés
+enum Role {
+  ADMIN
+  USER
+  ANONYMOUS
+}
+
+// Les packages demandés
+enum Package {
+  FREE
+  PRO
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  role      Role     @default(USER)
+  package   Package  @default(FREE)
+  photos    Photo[]  
+  logs      Log[]
+}
+
+model Photo {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String?
+  hashtags    String[] 
+  url         String   
+  createdAt   DateTime @default(now())
+  userId      Int
+  author      User     @relation(fields: [userId], references: [id])
+}
+
+model Log {
+  id        Int      @id @default(autoincrement())
+  action    String   // "LOGIN", "UPLOAD", "DOWNLOAD", etc.
+  timestamp DateTime @default(now())
+  userId    Int?
+  user      User?    @relation(fields: [userId], references: [id])
+  details   String?
+}

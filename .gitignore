@@ -1,0 +1,21 @@
+# Dependency directories
+node_modules/
+dist/
+.DS_Store
+
+# Environment variables
+.env
+
+# Backend specific
+backend/node_modules/
+backend/dist/
+
+# Frontend specific
+frontend/node_modules/
+frontend/dist/
+
+# Uploaded files
+uploads/
+
+# Tests
+coverage/
