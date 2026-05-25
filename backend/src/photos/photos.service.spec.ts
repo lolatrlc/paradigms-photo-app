@@ -71,4 +71,33 @@ describe('PhotosService', () => {
 
   expect(mockPrismaService.photo.delete).toHaveBeenCalled();
   });
+
+
+
+  it('should refuse upload when FREE package limit is reached', async () => {
+  const fakePhotos = [
+    { createdAt: new Date() },
+    { createdAt: new Date() },
+    { createdAt: new Date() },
+    { createdAt: new Date() },
+    { createdAt: new Date() },
+  ];
+
+  mockPrismaService.photo.findMany.mockResolvedValue(fakePhotos);
+
+  await expect(
+    service.create(
+      {
+        title: 'Test',
+        description: 'Test',
+        hashtags: ['test'],
+        url: 'uploads/test.jpg',
+        userId: 1,
+      },
+      'FREE',
+    ),
+  ).rejects.toThrow(
+    'Limit reached : Your package FREE only allows 5 photos per day.',
+  );
+  });
 });
