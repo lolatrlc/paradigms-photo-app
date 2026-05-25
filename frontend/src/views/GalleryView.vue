@@ -8,6 +8,11 @@ type Photo = {
   url: string;
   description?: string;
   hashtags: string[];
+  createdAt: string;
+
+  author: {
+    email: string;
+  };
 };
 
 const photos = ref<Photo[]>([]);
@@ -134,6 +139,21 @@ onMounted(() => {
 
         <h3>{{ photo.title }}</h3>
         <p>{{ photo.description }}</p>
+
+        <p>
+          <strong>Author:</strong>
+          {{ photo.author.email }}
+        </p>
+
+        <p>
+          <strong>Uploaded:</strong>
+          {{ new Date(photo.createdAt).toLocaleString() }}
+        </p>
+
+        <p>
+          <strong>Hashtags:</strong>
+          {{ photo.hashtags.join(", ") }}
+        </p>
 
       </div>
 
