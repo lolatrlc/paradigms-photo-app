@@ -100,4 +100,23 @@ describe('PhotosService', () => {
     'Limit reached : Your package FREE only allows 5 photos per day.',
   );
   });
+
+
+
+  it('should throw error if photo does not exist when updating', async () => {
+  mockPrismaService.photo.findUnique.mockResolvedValue(null);
+
+  await expect(
+    service.update(
+      999,
+      {
+        title: 'Updated',
+        description: 'Updated',
+        hashtags: 'test',
+      },
+      1,
+      'USER',
+    ),
+  ).rejects.toThrow('Photo not found');
+  });
 });
