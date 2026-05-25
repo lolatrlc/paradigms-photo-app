@@ -5,6 +5,9 @@ import api from "../services/api";
 const metrics = ref({
   totalPhotos: 0,
   totalUsers: 0,
+  freeUsers: 0,
+  proUsers: 0,
+  uploadsToday: 0,
 });
 
 const loading = ref(true);
@@ -42,6 +45,21 @@ onMounted(() => {
     <div class="card">
       <h2>Total Users</h2>
       <p>{{ metrics.totalUsers }}</p>
+    </div>
+
+    <div class="card">
+    <h2>FREE Users</h2>
+    <p>{{ metrics.freeUsers }}</p>
+    </div>
+
+    <div class="card">
+    <h2>PRO Users</h2>
+    <p>{{ metrics.proUsers }}</p>
+    </div>
+
+    <div class="card">
+    <h2>Uploads Today</h2>
+    <p>{{ metrics.uploadsToday }}</p>
     </div>
 
   </div>
