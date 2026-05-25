@@ -37,7 +37,7 @@ describe('PhotosService', () => {
     expect(service).toBeDefined();
   });
 
-  
+
   it('should forbid deleting another user photo', async () => {
   mockPrismaService.photo.findUnique.mockResolvedValue({
     id: 1,
@@ -48,5 +48,27 @@ describe('PhotosService', () => {
   await expect(
     service.delete(1, 1, 'USER'),
   ).rejects.toThrow('You are not allowed to delete this photo.');
-});
+  });
+
+
+
+  it('should allow admin to delete any photo', async () => {
+  mockPrismaService.photo.findUnique.mockResolvedValue({
+    id: 1,
+    userId: 999,
+    url: 'uploads/test.jpg',
+  });
+
+  mockPrismaService.photo.delete.mockResolvedValue({
+    id: 1,
+  });
+
+  const result = await service.delete(1, 1, 'ADMIN');
+
+  expect(result).toEqual({
+    id: 1,
+  });
+
+  expect(mockPrismaService.photo.delete).toHaveBeenCalled();
+  });
 });
