@@ -6,6 +6,7 @@ const file = ref<File | null>(null);
 const title = ref("");
 const description = ref("");
 const hashtags = ref("");
+const previewUrl = ref("");
 
 const handleFileChange = (event: Event) => {
   const target = event.target as HTMLInputElement;
@@ -14,6 +15,8 @@ const handleFileChange = (event: Event) => {
   if (!fileList || fileList.length === 0) return;
 
   file.value = fileList.item(0)!;
+
+  previewUrl.value = URL.createObjectURL(file.value);
 };
 
 const handleUpload = async () => {
@@ -71,6 +74,10 @@ const handleUpload = async () => {
         v-model="hashtags"
         placeholder="hashtags (comma separated)"
       />
+
+      <div v-if="previewUrl" class="preview-container">
+        <img :src="previewUrl" class="preview-image" />
+      </div>
 
       <button @click="handleUpload">
         Upload
@@ -142,6 +149,21 @@ button {
 
 button:hover {
   opacity: 0.8;
+}
+
+.preview-container {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.preview-image {
+  width: 100%;
+  max-width: 400px;
+
+  border-radius: 16px;
+
+  box-shadow:
+    0 10px 25px rgba(0,0,0,0.1);
 }
 
 </style>
