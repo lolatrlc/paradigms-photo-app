@@ -31,50 +31,85 @@ onMounted(() => {
 </script>
 
 <template>
-  <h1>Dashboard</h1>
+  <div class="dashboard">
 
-  <p v-if="loading">Loading metrics...</p>
+    <h1>Dashboard</h1>
 
-  <div v-else class="stats">
+    <p v-if="loading">
+      Loading metrics...
+    </p>
 
-    <div class="card">
-      <h2>Total Photos</h2>
-      <p>{{ metrics.totalPhotos }}</p>
-    </div>
+    <div v-else class="stats-grid">
 
-    <div class="card">
-      <h2>Total Users</h2>
-      <p>{{ metrics.totalUsers }}</p>
-    </div>
+      <div class="card">
+        <h2>Total Photos</h2>
+        <p>{{ metrics.totalPhotos }}</p>
+      </div>
 
-    <div class="card">
-    <h2>FREE Users</h2>
-    <p>{{ metrics.freeUsers }}</p>
-    </div>
+      <div class="card">
+        <h2>Total Users</h2>
+        <p>{{ metrics.totalUsers }}</p>
+      </div>
 
-    <div class="card">
-    <h2>PRO Users</h2>
-    <p>{{ metrics.proUsers }}</p>
-    </div>
+      <div class="card">
+        <h2>FREE Users</h2>
+        <p>{{ metrics.freeUsers }}</p>
+      </div>
 
-    <div class="card">
-    <h2>Uploads Today</h2>
-    <p>{{ metrics.uploadsToday }}</p>
+      <div class="card">
+        <h2>PRO Users</h2>
+        <p>{{ metrics.proUsers }}</p>
+      </div>
+
+      <div class="card">
+        <h2>Uploads Today</h2>
+        <p>{{ metrics.uploadsToday }}</p>
+      </div>
+
     </div>
 
   </div>
 </template>
 
 <style scoped>
-.stats {
-  display: flex;
-  gap: 20px;
+.dashboard h1 {
+  margin-bottom: 30px;
+}
+
+.stats-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(auto-fit, minmax(220px, 1fr));
+
+  gap: 25px;
 }
 
 .card {
-  border: 1px solid #ccc;
-  padding: 20px;
-  width: 200px;
-  text-align: center;
+  background: white;
+
+  padding: 30px;
+
+  border-radius: 20px;
+
+  box-shadow:
+    0 10px 30px rgba(0,0,0,0.08);
+
+  transition: transform 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.card h2 {
+  font-size: 18px;
+  margin-bottom: 15px;
+  color: #555;
+}
+
+.card p {
+  font-size: 32px;
+  font-weight: bold;
 }
 </style>
