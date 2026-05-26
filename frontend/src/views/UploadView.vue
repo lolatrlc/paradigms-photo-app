@@ -2,11 +2,14 @@
 import { ref } from "vue";
 import api from "../services/api";
 
+import { useToast } from "vue-toastification";
+
 const file = ref<File | null>(null);
 const title = ref("");
 const description = ref("");
 const hashtags = ref("");
 const previewUrl = ref("");
+const toast = useToast();
 
 const handleFileChange = (event: Event) => {
   const target = event.target as HTMLInputElement;
@@ -21,7 +24,7 @@ const handleFileChange = (event: Event) => {
 
 const handleUpload = async () => {
   if (!file.value) {
-    alert("Please select a file");
+    toast.error("Please select a file");
     return;
   }
 
@@ -40,10 +43,10 @@ const handleUpload = async () => {
     });
 
     console.log("UPLOAD SUCCESS:", res.data);
-    alert("Photo uploaded !");
+    toast.success("Photo uploaded successfully!");
   } catch (err) {
     console.error(err);
-    alert("Upload failed");
+    toast.error("Upload failed");
   }
 };
 </script>
