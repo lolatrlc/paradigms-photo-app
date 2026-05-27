@@ -20,6 +20,15 @@ const loading = ref(true);
 const searchAuthor = ref("");
 const searchHashtag = ref("");
 const editingPhotoId = ref<number | null>(null);
+const selectedImage = ref<string | null>(null);
+
+const openImage = (url: string) => {
+  selectedImage.value = url;
+};
+
+const closeImage = () => {
+  selectedImage.value = null;
+};
 
 const editTitle = ref("");
 const editDescription = ref("");
@@ -116,7 +125,11 @@ onMounted(() => {
   <div class="grid">
     <div v-for="photo in photos" :key="photo.id" class="card">
 
-      <img :src="'http://localhost:3000/' + photo.url" />
+      <img
+        :src="'http://localhost:3000/' + photo.url"
+        @click="openImage(photo.url)"
+        class="photo"
+      />
 
       <div v-if="editingPhotoId === photo.id">
 
@@ -158,24 +171,25 @@ onMounted(() => {
             By {{ photo.author.email }}
           </div>
 
-        <p>
-          <strong>Author:</strong>
-          {{ photo.author.email }}
-        </p>
+        <div class="info-row">
+          <span class="label">Author</span>
+          <span>{{ photo.author.email }}</span>
+        </div>
 
-        <p>
-          <strong>Uploaded:</strong>
-          {{ new Date(photo.createdAt).toLocaleString() }}
-        </p>
-
-        <p>
-          <strong>Hashtags:</strong>
-          {{ photo.hashtags.join(", ") }}
-        </p>
+        <div class="info-row">
+          <span class="label">Uploaded</span>
+          <span>
+            {{ new Date(photo.createdAt).toLocaleDateString() }}
+          </span>
+        </div>
 
       </div>
 
       <div class="actions">
+
+        <a class="download-btn" :href="'http://localhost:3000/photos/download/' + photo.id">
+        Download
+        </a>
 
       <button class="edit-btn" @click="startEdit(photo)">
         Edit
@@ -191,6 +205,17 @@ onMounted(() => {
 
     </div>
   </div>
+
+  <div
+  v-if="selectedImage"
+  class="modal"
+  @click="closeImage"
+>
+  <img
+    :src="'http://localhost:3000/' + selectedImage"
+    class="modal-image"
+  />
+</div>
 </template>
 
 <style scoped>
@@ -249,10 +274,13 @@ h1 {
   transform: translateY(-5px);
 }
 
-img {
+.photo {
   width: 100%;
   height: 250px;
+
   object-fit: cover;
+
+  cursor: pointer;
 }
 
 .card-content {
@@ -308,6 +336,68 @@ h3 {
 .delete-btn {
   background: #ff4d4d;
   color: white;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+
+  margin-bottom: 8px;
+
+  font-size: 14px;
+}
+
+.label {
+  font-weight: bold;
+  color: #666;
+}
+
+.download-btn {
+  flex: 1;
+
+  text-align: center;
+
+  padding: 10px;
+
+  border-radius: 8px;
+
+  background: #111;
+  color: white;
+
+  text-decoration: none;
+}
+
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 100%;
+
+  background: rgba(0,0,0,0.85);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  z-index: 2000;
+}
+
+.modal-image {
+  max-width: 90%;
+  max-height: 90%;
+
+  width: auto;
+  height: auto;
+
+  object-fit: contain;
+
+  border-radius: 12px;
+
+  box-shadow:
+    0 10px 40px rgba(0,0,0,0.5);
 }
 
 </style>
