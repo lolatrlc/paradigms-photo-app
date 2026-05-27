@@ -8,6 +8,7 @@ const metrics = ref({
   freeUsers: 0,
   proUsers: 0,
   uploadsToday: 0,
+  mostUsedHashtag: "",
 });
 
 const loading = ref(true);
@@ -64,6 +65,13 @@ onMounted(() => {
       <div class="card">
         <h2>Uploads Today</h2>
         <p>{{ metrics.uploadsToday }}</p>
+      </div>
+
+      <div class="card">
+        <h2>Top Hashtag</h2>
+        <p>
+          #{{ metrics.mostUsedHashtag }}
+        </p>
       </div>
 
     </div>

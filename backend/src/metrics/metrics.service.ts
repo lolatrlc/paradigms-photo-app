@@ -33,12 +33,40 @@ export class MetricsService {
         },
     });
 
+    const photos = await this.prisma.photo.findMany();
+
+    const hashtagCount: Record<string, number> = {};
+
+    photos.forEach((photo) => {
+
+    photo.hashtags.forEach((tag) => {
+
+        hashtagCount[tag] =
+        (hashtagCount[tag] || 0) + 1;
+    });
+    });
+
+    let mostUsedHashtag = 'None';
+
+    let maxCount = 0;
+
+    for (const tag in hashtagCount) {
+
+    if (hashtagCount[tag] > maxCount) {
+
+        maxCount = hashtagCount[tag];
+
+        mostUsedHashtag = tag;
+    }
+    }
+
     return {
         totalPhotos,
         totalUsers,
         freeUsers,
         proUsers,
         uploadsToday,
+        mostUsedHashtag,
     };
     }
 }
