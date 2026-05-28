@@ -119,4 +119,38 @@ describe('PhotosService', () => {
     ),
   ).rejects.toThrow('Photo not found');
   });
+
+
+  it('should allow PRO user even above FREE limit', async () => {
+
+  const fakePhotos = Array(20).fill({
+    createdAt: new Date(),
+  });
+
+  mockPrismaService.photo.findMany.mockResolvedValue(
+    fakePhotos,
+  );
+
+  mockPrismaService.photo.create.mockResolvedValue({
+    id: 2,
+    title: 'PRO photo',
+  });
+
+  const result = await service.create(
+    {
+      title: 'PRO photo',
+      description: 'test',
+      hashtags: ['pro'],
+      url: 'uploads/pro.jpg',
+      userId: 1,
+    },
+    'PRO',
+  );
+
+  expect(result.title).toBe('PRO photo');
+
+  expect(
+    mockPrismaService.photo.create,
+  ).toHaveBeenCalled();
+  });
 });
