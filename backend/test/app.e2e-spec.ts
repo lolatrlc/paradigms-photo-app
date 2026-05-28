@@ -23,6 +23,19 @@ describe('AppController (e2e)', () => {
       .expect('Hello World!');
   });
 
+
+  it('/auth/login (POST) should reject invalid credentials', () => {
+
+  return request(app.getHttpServer())
+    .post('/auth/login')
+    .send({
+      email: 'fake@test.com',
+      password: 'wrongpassword',
+    })
+    .expect(401);
+  });
+
+  
   afterEach(async () => {
     await app.close();
   });
