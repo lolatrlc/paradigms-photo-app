@@ -1,5 +1,6 @@
 import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
+import { PHOTO_LIMITS } from './photo-limits';
 import * as fs from 'node:fs'; // Utilise le préfixe node:
 import { unlink } from 'node:fs/promises';
 import { Response } from 'express';
@@ -82,8 +83,7 @@ export class PhotosService {
     // --- LOGIQUE DE LIMITE (OUTCOME O5) ---
     
     //Déf la limite
-    const MAX_FREE_PHOTOS = 5; 
-    const limit = userPackage === 'PRO' ? 1000 : MAX_FREE_PHOTOS;
+    const limit = PHOTO_LIMITS[userPackage as keyof typeof PHOTO_LIMITS];
 
     //récup toutes les photos de cet utilisateur
     const userPhotos = await this.prisma.photo.findMany({
