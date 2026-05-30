@@ -1,16 +1,48 @@
 services:
-  db:
-    image: postgres:15
-    restart: always
-    environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: photodb
-    ports:
-      - "5432:5432"
+  postgres:
+    image: postgres:16
+    container_name: photo_postgres
 
-  adminer: # Interface visuelle pour voir ta base de données
-    image: adminer
-    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Database2026
+      POSTGRES_DB: photodb
+
     ports:
-      - "8080:8080"
+      - "5433:5432"
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build: ./backend
+    container_name: photo_backend
+
+    ports:
+      - "3000:3000"
+
+    environment:
+      DATABASE_URL: postgresql://postgres:Database2026@postgres:5432/photodb
+
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  frontend:
+    build: ./frontend
+    container_name: photo_frontend
+
+    ports:
+      - "5173:5173"
+
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:
