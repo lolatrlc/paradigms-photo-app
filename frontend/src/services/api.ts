@@ -21,6 +21,22 @@ export async function login(email: string, password: string) {
   });
 
   return res.data;
-}
+  }
+
+export async function register(
+  email: string,
+  password: string,
+  role: string,
+  packageType: string
+) {
+  const res = await api.post("/auth/register", {
+    email,
+    password,
+    role,
+    package: packageType,
+  });
+
+  return res.data;
+  }
 
 export default api

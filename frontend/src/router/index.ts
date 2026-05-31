@@ -4,6 +4,7 @@ import LoginView from '../views/LoginView.vue'
 import GalleryView from "../views/GalleryView.vue";
 import PublicGalleryView from "../views/PublicGalleryView.vue";
 import DashboardView from "../views/DashboardView.vue";
+import RegisterView from "../views/RegisterView.vue";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -14,6 +15,7 @@ const router = createRouter({
     { path: "/gallery", component: GalleryView },
     { path: "/public", component: PublicGalleryView },
     { path: "/dashboard", component: DashboardView,},
+    { path: "/register", component: RegisterView },
   ]
 })
 

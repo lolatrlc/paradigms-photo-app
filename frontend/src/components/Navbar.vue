@@ -36,6 +36,10 @@ const logout = () => {
         Dashboard
       </router-link>
 
+      <router-link to="/register">
+        Register
+      </router-link>
+
       <button @click="logout">
         Logout
       </button>
