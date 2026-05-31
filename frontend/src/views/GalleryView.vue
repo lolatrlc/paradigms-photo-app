@@ -131,20 +131,43 @@ onMounted(() => {
         class="photo"
       />
 
-      <div v-if="editingPhotoId === photo.id">
+      <div
+        v-if="editingPhotoId === photo.id"
+        class="edit-form"
+      >
 
-        <input v-model="editTitle" />
-        <br /><br />
+        <input
+          v-model="editTitle"
+          placeholder="Title"
+        />
 
-        <input v-model="editDescription" />
-        <br /><br />
+        <input
+          v-model="editDescription"
+          placeholder="Description"
+        />
 
-        <input v-model="editHashtags" />
-        <br /><br />
+        <input
+          v-model="editHashtags"
+          placeholder="tag1,tag2,tag3"
+        />
 
-        <button @click="saveEdit(photo.id)">
-          Save
-        </button>
+        <div class="edit-actions">
+
+          <button
+            class="save-btn"
+            @click="saveEdit(photo.id)"
+          >
+            Save
+          </button>
+
+          <button
+            class="cancel-btn"
+            @click="editingPhotoId = null"
+          >
+            Cancel
+          </button>
+
+        </div>
 
       </div>
 
@@ -398,6 +421,57 @@ h3 {
 
   box-shadow:
     0 10px 40px rgba(0,0,0,0.5);
+}
+
+.edit-form {
+  padding: 15px;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 12px;
+}
+
+.edit-form input {
+  padding: 10px;
+
+  border: 1px solid #ddd;
+  border-radius: 8px;
+
+  font-size: 14px;
+}
+
+.edit-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.save-btn {
+  flex: 1;
+
+  background: #28a745;
+  color: white;
+
+  border: none;
+  border-radius: 8px;
+
+  padding: 10px;
+
+  cursor: pointer;
+}
+
+.cancel-btn {
+  flex: 1;
+
+  background: #6c757d;
+  color: white;
+
+  border: none;
+  border-radius: 8px;
+
+  padding: 10px;
+
+  cursor: pointer;
 }
 
 </style>

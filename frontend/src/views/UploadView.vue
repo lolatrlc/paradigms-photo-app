@@ -44,10 +44,15 @@ const handleUpload = async () => {
 
     console.log("UPLOAD SUCCESS:", res.data);
     toast.success("Photo uploaded successfully!");
-  } catch (err) {
-    console.error(err);
-    toast.error("Upload failed");
-  }
+    } catch (err: any) {
+        console.error(err);
+
+        const message =
+          err.response?.data?.message ||
+          "Upload failed";
+
+        toast.error(message);
+    }
 };
 </script>
 
