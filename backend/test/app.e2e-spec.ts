@@ -8,7 +8,7 @@ describe('AppController (e2e)', () => {
   let app: INestApplication<App>;
 
   beforeEach(async () => {
-    const moduleFixture: TestingModule = await Test.createTestingModule({
+    const moduleFixture: TestingModule = await Test.createTestingModule({ //we create a testing module for the application
       imports: [AppModule],
     }).compile();
 
@@ -16,7 +16,7 @@ describe('AppController (e2e)', () => {
     await app.init();
   });
 
-  it('/ (GET)', () => {
+  it('/ (GET)', () => { //we test the root endpoint of the application
     return request(app.getHttpServer())
       .get('/')
       .expect(200)
@@ -24,7 +24,7 @@ describe('AppController (e2e)', () => {
   });
 
 
-  it('/auth/login (POST) should reject invalid credentials', () => {
+  it('/auth/login (POST) should reject invalid credentials', () => { //we test the login endpoint of the application with invalid credentials
 
   return request(app.getHttpServer())
     .post('/auth/login')

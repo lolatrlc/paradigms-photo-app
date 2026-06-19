@@ -8,7 +8,7 @@ import { createPinia } from 'pinia';
 
 import { createRouter, createWebHistory } from 'vue-router';
 
-const router = createRouter({
+const router = createRouter({ //we create a router for the test
   history: createWebHistory(),
   routes: [],
 });
@@ -17,7 +17,7 @@ describe('LoginView', () => {
 
   it('should render login title', async () => {
 
-    const wrapper = mount(LoginView, {
+    const wrapper = mount(LoginView, { //we mount the LoginView component with the necessary plugins
       global: {
         plugins: [createPinia(), router],
       },
@@ -26,6 +26,7 @@ describe('LoginView', () => {
     expect(wrapper.text()).toContain('Login');
   });
 
+  
   it('should render login button', async () => {
 
     const wrapper = mount(LoginView, {

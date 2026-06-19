@@ -1,6 +1,6 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { PhotosService } from './photos.service';
-import { PrismaService } from '../prisma.service';
+import { Test, TestingModule } from '@nestjs/testing'; //environment for testing NestJS applications
+import { PhotosService } from './photos.service'; //service being tested
+import { PrismaService } from '../prisma.service'; //service normally used for database interactions, will be mocked in tests
 
 describe('PhotosService', () => {
   let service: PhotosService;
@@ -39,7 +39,7 @@ describe('PhotosService', () => {
 
 
   it('should forbid deleting another user photo', async () => {
-  mockPrismaService.photo.findUnique.mockResolvedValue({
+  mockPrismaService.photo.findUnique.mockResolvedValue({ //we simulate a photo
     id: 1,
     userId: 999,
     url: 'uploads/test.jpg',
@@ -59,23 +59,23 @@ describe('PhotosService', () => {
     url: 'uploads/test.jpg',
   });
 
-  mockPrismaService.photo.delete.mockResolvedValue({
+  mockPrismaService.photo.delete.mockResolvedValue({ //we simulate the deletion of a photo
     id: 1,
   });
 
-  const result = await service.delete(1, 1, 'ADMIN');
+  const result = await service.delete(1, 1, 'ADMIN'); //we simulate an admin deleting a photo
 
-  expect(result).toEqual({
+  expect(result).toEqual({ //we expect the result to be the deleted photo
     id: 1,
   });
 
-  expect(mockPrismaService.photo.delete).toHaveBeenCalled();
+  expect(mockPrismaService.photo.delete).toHaveBeenCalled(); //we expect the delete method to have been called
   });
 
 
 
   it('should refuse upload when FREE package limit is reached', async () => {
-  const fakePhotos = [
+  const fakePhotos = [ //we simulate 5 photos already uploaded today
     { createdAt: new Date() },
     { createdAt: new Date() },
     { createdAt: new Date() },
@@ -83,10 +83,10 @@ describe('PhotosService', () => {
     { createdAt: new Date() },
   ];
 
-  mockPrismaService.photo.findMany.mockResolvedValue(fakePhotos);
+  mockPrismaService.photo.findMany.mockResolvedValue(fakePhotos); //we simulate the database returning 5 photos for today
 
   await expect(
-    service.create(
+    service.create( //we simulate a user trying to upload a new photo
       {
         title: 'Test',
         description: 'Test',
@@ -104,10 +104,10 @@ describe('PhotosService', () => {
 
 
   it('should throw error if photo does not exist when updating', async () => {
-  mockPrismaService.photo.findUnique.mockResolvedValue(null);
+  mockPrismaService.photo.findUnique.mockResolvedValue(null); //we simulate the database returning null, meaning the photo does not exist
 
   await expect(
-    service.update(
+    service.update( //we simulate a user trying to update a photo that does not exist
       999,
       {
         title: 'Updated',
@@ -123,15 +123,15 @@ describe('PhotosService', () => {
 
   it('should allow PRO user even above FREE limit', async () => {
 
-  const fakePhotos = Array(20).fill({
+  const fakePhotos = Array(20).fill({ //we simulate 20 photos already uploaded today
     createdAt: new Date(),
   });
 
-  mockPrismaService.photo.findMany.mockResolvedValue(
+  mockPrismaService.photo.findMany.mockResolvedValue( //we simulate the database returning 20 photos for today
     fakePhotos,
   );
 
-  mockPrismaService.photo.create.mockResolvedValue({
+  mockPrismaService.photo.create.mockResolvedValue({ //we simulate the database returning the newly created photo
     id: 2,
     title: 'PRO photo',
   });
@@ -147,10 +147,10 @@ describe('PhotosService', () => {
     'PRO',
   );
 
-  expect(result.title).toBe('PRO photo');
+  expect(result.title).toBe('PRO photo'); //we expect the result to be the newly created photo
 
   expect(
-    mockPrismaService.photo.create,
+    mockPrismaService.photo.create, //we expect the create method to have been called
   ).toHaveBeenCalled();
   });
 });
